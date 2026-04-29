@@ -716,7 +716,13 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
       var filename = studentName.replace(/\s+/g, '_') + '_Performance_Report.doc';
 
       var reportEl = document.querySelector('.report');
-      var content = reportEl.innerHTML;
+      var clone = reportEl.cloneNode(true);
+      
+      // Physically remove interactive elements so Word doesn't render them
+      var unwanted = clone.querySelectorAll('.del-col, .add-btn, .gen-narrative-btn');
+      unwanted.forEach(function(el) { el.remove(); });
+      
+      var content = clone.innerHTML;
 
       var styleSheets = document.querySelectorAll('style');
       var styles = '';
@@ -752,7 +758,7 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
     async function generateNarrative() {
       var apiKey = localStorage.getItem('ANTHROPIC_API_KEY');
       if (!apiKey) {
-        apiKey = prompt('Please enter your Anthropic API Key to use this feature.\n(It will be saved securely in your browser)');
+        apiKey = window.prompt('Please enter your Anthropic API Key to use this feature.\n(It will be saved securely in your browser)');
         if (!apiKey) return;
         localStorage.setItem('ANTHROPIC_API_KEY', apiKey);
       }
@@ -776,7 +782,7 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
       prompt += 'PM Average: ' + pmAvg + '%\n\n';
       prompt += 'KM-SA Scores:\n' + kmTable + '\n\n';
       prompt += 'PM Scores:\n' + pmTable + '\n\n';
-      prompt += 'Write a warm, professional 3-paragraph narrative assessing this student. Mention specific scores. Do not use bullet points.';
+      prompt += 'Write a warm, professional 3-paragraph narrative assessing this student. Mention specific scores. Do not use bullet points, titles, or any markdown formatting (like asterisks for bold text). Provide only the plain text paragraphs.';
 
       btn.disabled = true;
       btn.textContent = 'Generating...';
