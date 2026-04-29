@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Performance Report — Melsoft Academy</title>
+  <title>Student Performance Report - Melsoft Academy</title>
   <style>
     *,
     *::before,
@@ -23,7 +23,6 @@
       padding: 2rem 1rem;
     }
 
-    /* Toolbar */
     #toolbar {
       max-width: 900px;
       margin: 0 auto 1.25rem;
@@ -81,7 +80,6 @@
       margin-left: 4px;
     }
 
-    /* Report card */
     .report {
       max-width: 900px;
       margin: 0 auto;
@@ -91,7 +89,6 @@
       padding: 2.5rem 2.5rem 2rem;
     }
 
-    /* Header */
     .header {
       border-bottom: 2px solid #1a1a1a;
       padding-bottom: 1.25rem;
@@ -122,7 +119,6 @@
       font-weight: 600;
     }
 
-    /* Stats */
     .stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -152,7 +148,6 @@
       letter-spacing: 0.04em;
     }
 
-    /* Section */
     .section {
       margin-bottom: 1.75rem;
     }
@@ -173,9 +168,6 @@
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: #444;
-      margin-bottom: 0;
-      border-bottom: none;
-      padding-bottom: 0;
     }
 
     .narrative-wrap {
@@ -190,7 +182,6 @@
       min-height: 60px;
     }
 
-    /* AI generating state */
     .narrative.generating {
       color: #999;
       font-style: italic;
@@ -214,7 +205,6 @@
       }
     }
 
-    /* AI generate inline button */
     .gen-narrative-btn {
       display: none;
       align-items: center;
@@ -243,7 +233,6 @@
       display: flex;
     }
 
-    /* Tables */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -276,7 +265,6 @@
       background: #f9f9f7;
     }
 
-    /* Badges */
     .badge {
       display: inline-block;
       padding: 2px 9px;
@@ -328,7 +316,6 @@
       color: #999;
     }
 
-    /* Edit mode styles */
     body.editing [contenteditable="true"] {
       outline: 1.5px dashed #aac4e8;
       border-radius: 3px;
@@ -373,7 +360,6 @@
       width: 34px;
     }
 
-    /* Print styles */
     @media print {
       @page {
         margin: 0;
@@ -411,8 +397,9 @@
 <body>
 
   <div id="toolbar">
-    <button class="primary" onclick="toggleEdit()" id="editBtn">✏ Edit mode</button>
-    <button onclick="window.print()">🖨 Print / Save as PDF</button>
+    <button class="primary" onclick="toggleEdit()" id="editBtn">&#9998; Edit mode</button>
+    <button onclick="window.print()">&#128424; Save as PDF</button>
+    <button onclick="exportToWord()">&#128196; Save as Word (.doc)</button>
     <span id="editHint"></span>
   </div>
 
@@ -421,10 +408,11 @@
     <div class="header">
       <h1><span contenteditable="false">Student Performance Report</span></h1>
       <div class="sub">
-        <span contenteditable="false">Melsoft Academy</span> · <span contenteditable="false">January 2025 Cohort</span>
+        <span contenteditable="false">Melsoft Academy</span> &middot; <span contenteditable="false">January 2025
+          Cohort</span>
       </div>
       <div class="meta">
-        <span>Student: <strong contenteditable="false">XXXX XXX</strong></span>
+        <span>Student: <strong contenteditable="false" id="studentName">XXXX XXX</strong></span>
         <span>Report Date: <strong contenteditable="false">18 March 2026</strong></span>
       </div>
     </div>
@@ -461,7 +449,8 @@
         </button>
       </div>
       <div class="narrative-wrap">
-        <div class="narrative" id="narrativeText" contenteditable="false">XXXX XXX has demonstrated a consistently strong and commendable performance throughout the Melsoft Academy programme, achieving a combined overall average of 82% across both his Knowledge Module Summative Assessments and Practical Module projects. This reflects genuine dedication, growing technical proficiency, and a willingness to tackle increasingly complex challenges. His Practical Module average of 90% is particularly impressive, showing a strong grasp of applied, hands-on development — highlighted by perfect scores on PM-01, PM-02, and PM-03, and a standout 95% on the E-commerce Website project. The Final Project, which stands as the capstone of his practical work, earned an excellent 94% — a testament to XXXX's ability to bring together everything he has learned into a single polished deliverable.
+        <!-- prettier-ignore -->
+        <div class="narrative" id="narrativeText" contenteditable="false">XXXX XXX has demonstrated a consistently strong and commendable performance throughout the Melsoft Academy programme, achieving a combined overall average of 82% across both his Knowledge Module Summative Assessments and Practical Module projects. This reflects genuine dedication, growing technical proficiency, and a willingness to tackle increasingly complex challenges. His Practical Module average of 90% is particularly impressive, showing a strong grasp of applied, hands-on development -- highlighted by perfect scores on PM-01, PM-02, and PM-03, and a standout 95% on the E-commerce Website project. The Final Project, which stands as the capstone of his practical work, earned an excellent 94% -- a testament to XXXX's ability to bring together everything he has learned into a single polished deliverable.
 
 On the Knowledge Module side (average 68%), XXXX performed solidly, with notable highs on KM-08 (86%) and KM-11 and KM-12 (both 88%). Dips in KM-03 through KM-07 reflect the increased complexity of mid-programme theory, a pattern common among students navigating more abstract concepts; XXXX responded well and recovered strongly in the latter modules.
 
@@ -505,9 +494,9 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
     <div class="section">
       <h2>Grade Band Key</h2>
       <div class="grade-key">
-        <span><span class="badge d">Distinction</span> ≥ 80%</span>
-        <span><span class="badge m">Merit</span> 70–79%</span>
-        <span><span class="badge p">Pass</span> 60–69%</span>
+        <span><span class="badge d">Distinction</span> &ge; 80%</span>
+        <span><span class="badge m">Merit</span> 70-79%</span>
+        <span><span class="badge p">Pass</span> 60-69%</span>
         <span><span class="badge dev">Developing</span> &lt; 60%</span>
       </div>
     </div>
@@ -515,33 +504,41 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
     <div class="footer">
       This report is issued by <span contenteditable="false">Melsoft Academy</span> and is confidential to the named
       student.
-      © <span contenteditable="false">2026</span> <span contenteditable="false">Melsoft Academy</span>. All rights
+      &copy; <span contenteditable="false">2026</span> <span contenteditable="false">Melsoft Academy</span>. All rights
       reserved.
     </div>
 
   </div>
 
   <script>
-    const kmDefault = [
+    var kmDefault = [
       ["KM-01-SA", "68%"], ["KM-02-SA", "66%"], ["KM-03-SA", "59%"], ["KM-04-SA", "57%"],
       ["KM-05-SA", "61%"], ["KM-06-SA", "71%"], ["KM-07-SA", "58%"], ["KM-08-SA", "86%"],
       ["KM-09-SA", "64%"], ["KM-10-SA", "56%"], ["KM-11-SA", "88%"], ["KM-12-SA", "88%"]
     ];
-    const pmDefault = [
-      ["PM-01", "PM-01", "100%"], ["PM-02", "PM-02", "100%"], ["PM-03", "PM-03", "100%"],
-      ["PM-04", "Diamond Tech Website Reinvention", "78%"], ["PM-05", "Menu-Like Website Revamp", "83%"],
-      ["PM-06", "Team Portfolio", "78%"], ["PM-07", "Clock", "82%"], ["PM-08", "Quiz App", "92%"],
-      ["PM-09", "Personal Portfolio", "84%"], ["PM-10", "Cryptx", "83%"],
-      ["PM-11", "E-commerce Website", "95%"], ["PM-12", "Booking & Reservation App", "93%"],
-      ["PM-13", "Private Notes App", "100%"], ["PM-14", "Final Project", "95%"],
-      ["Capstone", "Final Project", "94%"]
+
+    var pmDefault = [
+      ["PM-01", "PM-01", "100%"],
+      ["PM-02", "PM-02", "100%"],
+      ["PM-03", "PM-03", "100%"],
+      ["PM-04", "Diamond Tech Website Reinvention", "78%"],
+      ["PM-05", "Menu-Like Website Revamp", "83%"],
+      ["PM-06", "Team Portfolio", "78%"],
+      ["PM-07", "Clock", "82%"],
+      ["PM-08", "Quiz App", "92%"],
+      ["PM-09", "Personal Portfolio", "84%"],
+      ["PM-10", "Cryptx", "83%"],
+      ["PM-11", "E-commerce Website", "95%"],
+      ["PM-12", "Booking & Reservation App", "93%"],
+      ["PM-13", "Private Notes App", "100%"],
+      ["PM-14", "Final Project", "94%"]
     ];
 
-    let editing = false;
+    var editing = false;
 
     function badge(scoreStr) {
-      const n = parseInt(scoreStr);
-      if (isNaN(n)) return '<span class="badge dev">–</span>';
+      var n = parseInt(scoreStr);
+      if (isNaN(n)) return '<span class="badge dev">-</span>';
       if (n >= 80) return '<span class="badge d">Distinction</span>';
       if (n >= 70) return '<span class="badge m">Merit</span>';
       if (n >= 60) return '<span class="badge p">Pass</span>';
@@ -549,219 +546,277 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
     }
 
     function avg(scores) {
-      const nums = scores.map(s => parseInt(s)).filter(n => !isNaN(n));
-      return nums.length ? Math.round(nums.reduce((a, b) => a + b, 0) / nums.length) : 0;
+      var nums = scores.map(function (s) { return parseInt(s); }).filter(function (n) { return !isNaN(n); });
+      return nums.length ? Math.round(nums.reduce(function (a, b) { return a + b; }, 0) / nums.length) : 0;
     }
 
     function getKMRows() {
-      return Array.from(document.querySelectorAll('#kmBody tr:not(.avg-row)')).map(r => {
-        const tds = r.querySelectorAll('td');
+      return Array.from(document.querySelectorAll('#kmBody tr:not(.avg-row)')).map(function (r) {
+        var tds = r.querySelectorAll('td');
         return [tds[0].innerText.trim(), tds[1].innerText.trim()];
       });
     }
 
     function getPMRows() {
-      return Array.from(document.querySelectorAll('#pmBody tr:not(.avg-row)')).map(r => {
-        const tds = r.querySelectorAll('td');
+      return Array.from(document.querySelectorAll('#pmBody tr:not(.avg-row)')).map(function (r) {
+        var tds = r.querySelectorAll('td');
         return [tds[0].innerText.trim(), tds[1].innerText.trim(), tds[2].innerText.trim()];
       });
     }
 
     function renderKM(data) {
-      const tbody = document.getElementById('kmBody');
-      const existing = getKMRows();
-      const rows = data || (existing.length ? existing : kmDefault);
-      let html = '';
-      rows.forEach(row => {
-        const score = row[1].replace('%', '');
-        html += `<tr>
-      <td contenteditable="${editing}">${row[0]}</td>
-      <td contenteditable="${editing}">${row[1]}</td>
-      <td>${badge(score)}</td>
-      <td class="del-col" style="${editing ? '' : 'display:none'}">
-        <button class="del-btn" onclick="this.closest('tr').remove();recalcKM()">✕</button>
-      </td>
-    </tr>`;
+      var tbody = document.getElementById('kmBody');
+      var existing = getKMRows();
+      var rows = data || (existing.length ? existing : kmDefault);
+      var html = '';
+      rows.forEach(function (row) {
+        var score = row[1].replace('%', '');
+        var delStyle = editing ? '' : 'display:none';
+        html += '<tr>';
+        html += '<td contenteditable="' + editing + '">' + row[0] + '</td>';
+        html += '<td contenteditable="' + editing + '">' + row[1] + '</td>';
+        html += '<td>' + badge(score) + '</td>';
+        html += '<td class="del-col" style="' + delStyle + '"><button class="del-btn" onclick="this.closest(\'tr\').remove();recalcKM()">x</button></td>';
+        html += '</tr>';
       });
       tbody.innerHTML = html;
-      // Score cell is index 1 — update badge in index 2 on every keystroke
-      tbody.querySelectorAll('tr:not(.avg-row)').forEach(tr => {
-        const scoreCell = tr.querySelectorAll('td')[1];
-        const badgeCell = tr.querySelectorAll('td')[2];
-        if (scoreCell) scoreCell.addEventListener('input', () => {
-          badgeCell.innerHTML = badge(parseInt(scoreCell.innerText));
-          recalcKM();
-        });
+      tbody.querySelectorAll('tr:not(.avg-row)').forEach(function (tr) {
+        var scoreCell = tr.querySelectorAll('td')[1];
+        var badgeCell = tr.querySelectorAll('td')[2];
+        if (scoreCell) {
+          scoreCell.addEventListener('input', function () {
+            badgeCell.innerHTML = badge(parseInt(scoreCell.innerText));
+            recalcKM();
+          });
+        }
       });
-      recalcKM(true);
+      recalcKM();
     }
 
-    function recalcKM(skipBadge) {
-      const rows = getKMRows();
-      const scores = rows.map(r => r[1]);
-      const a = avg(scores);
-      let avgRow = document.querySelector('#kmBody .avg-row');
-      if (!avgRow) { avgRow = document.createElement('tr'); avgRow.className = 'avg-row'; document.getElementById('kmBody').appendChild(avgRow); }
-      avgRow.innerHTML = `<td>Average</td><td>${a}%</td><td>${badge(a)}</td><td class="del-col" style="${editing ? '' : 'display:none'}"></td>`;
+    function recalcKM() {
+      var rows = getKMRows();
+      var scores = rows.map(function (r) { return r[1]; });
+      var a = avg(scores);
+      var avgRow = document.querySelector('#kmBody .avg-row');
+      if (!avgRow) {
+        avgRow = document.createElement('tr');
+        avgRow.className = 'avg-row';
+        document.getElementById('kmBody').appendChild(avgRow);
+      }
+      var delStyle = editing ? '' : 'display:none';
+      avgRow.innerHTML = '<td>Average</td><td>' + a + '%</td><td>' + badge(a) + '</td><td class="del-col" style="' + delStyle + '"></td>';
       document.getElementById('statKM').textContent = a + '%';
       recalcOverall();
     }
 
     function renderPM(data) {
-      const tbody = document.getElementById('pmBody');
-      const existing = getPMRows();
-      const rows = data || (existing.length ? existing : pmDefault);
-      let html = '';
-      rows.forEach(row => {
-        const score = row[2].replace('%', '');
-        html += `<tr>
-      <td contenteditable="${editing}">${row[0]}</td>
-      <td contenteditable="${editing}">${row[1]}</td>
-      <td contenteditable="${editing}">${row[2]}</td>
-      <td>${badge(score)}</td>
-      <td class="del-col" style="${editing ? '' : 'display:none'}">
-        <button class="del-btn" onclick="this.closest('tr').remove();recalcPM()">✕</button>
-      </td>
-    </tr>`;
+      var tbody = document.getElementById('pmBody');
+      var existing = getPMRows();
+      var rows = data || (existing.length ? existing : pmDefault);
+      var html = '';
+      rows.forEach(function (row) {
+        var score = row[2].replace('%', '');
+        var delStyle = editing ? '' : 'display:none';
+        html += '<tr>';
+        html += '<td contenteditable="' + editing + '">' + row[0] + '</td>';
+        html += '<td contenteditable="' + editing + '">' + row[1] + '</td>';
+        html += '<td contenteditable="' + editing + '">' + row[2] + '</td>';
+        html += '<td>' + badge(score) + '</td>';
+        html += '<td class="del-col" style="' + delStyle + '"><button class="del-btn" onclick="this.closest(\'tr\').remove();recalcPM()">x</button></td>';
+        html += '</tr>';
       });
       tbody.innerHTML = html;
-      // Score cell is index 2 — update badge in index 3 on every keystroke
-      tbody.querySelectorAll('tr:not(.avg-row)').forEach(tr => {
-        const scoreCell = tr.querySelectorAll('td')[2];
-        const badgeCell = tr.querySelectorAll('td')[3];
-        if (scoreCell) scoreCell.addEventListener('input', () => {
-          badgeCell.innerHTML = badge(parseInt(scoreCell.innerText));
-          recalcPM();
-        });
+      tbody.querySelectorAll('tr:not(.avg-row)').forEach(function (tr) {
+        var scoreCell = tr.querySelectorAll('td')[2];
+        var badgeCell = tr.querySelectorAll('td')[3];
+        if (scoreCell) {
+          scoreCell.addEventListener('input', function () {
+            badgeCell.innerHTML = badge(parseInt(scoreCell.innerText));
+            recalcPM();
+          });
+        }
       });
-      recalcPM(true);
+      recalcPM();
     }
 
-    function recalcPM(skipBadge) {
-      const rows = getPMRows();
-      const scores = rows.map(r => r[2]);
-      const a = avg(scores);
-      let avgRow = document.querySelector('#pmBody .avg-row');
-      if (!avgRow) { avgRow = document.createElement('tr'); avgRow.className = 'avg-row'; document.getElementById('pmBody').appendChild(avgRow); }
-      avgRow.innerHTML = `<td>Average</td><td></td><td>${a}%</td><td>${badge(a)}</td><td class="del-col" style="${editing ? '' : 'display:none'}"></td>`;
+    function recalcPM() {
+      var rows = getPMRows();
+      var scores = rows.map(function (r) { return r[2]; });
+      var a = avg(scores);
+      var avgRow = document.querySelector('#pmBody .avg-row');
+      if (!avgRow) {
+        avgRow = document.createElement('tr');
+        avgRow.className = 'avg-row';
+        document.getElementById('pmBody').appendChild(avgRow);
+      }
+      var delStyle = editing ? '' : 'display:none';
+      avgRow.innerHTML = '<td>Average</td><td></td><td>' + a + '%</td><td>' + badge(a) + '</td><td class="del-col" style="' + delStyle + '"></td>';
       document.getElementById('statPM').textContent = a + '%';
       recalcOverall();
     }
 
     function recalcOverall() {
-      const km = parseInt(document.getElementById('statKM').textContent);
-      const pm = parseInt(document.getElementById('statPM').textContent);
-      if (!isNaN(km) && !isNaN(pm)) document.getElementById('statOverall').textContent = Math.round((km + pm) / 2) + '%';
-      const total = document.querySelectorAll('#kmBody tr:not(.avg-row)').length + document.querySelectorAll('#pmBody tr:not(.avg-row)').length;
+      var kmText = document.getElementById('statKM').textContent;
+      var pmText = document.getElementById('statPM').textContent;
+      var km = parseInt(kmText);
+      var pm = parseInt(pmText);
+      if (!isNaN(km) && !isNaN(pm)) {
+        document.getElementById('statOverall').textContent = Math.round((km + pm) / 2) + '%';
+      }
+      var total = document.querySelectorAll('#kmBody tr:not(.avg-row)').length +
+        document.querySelectorAll('#pmBody tr:not(.avg-row)').length;
       document.getElementById('statTotal').textContent = total;
     }
 
     function addRow(type) {
       if (type === 'km') {
-        const tbody = document.getElementById('kmBody');
-        const avgRow = tbody.querySelector('.avg-row');
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td contenteditable="true">KM-XX-SA</td><td contenteditable="true">75%</td><td>${badge(75)}</td><td class="del-col"><button class="del-btn" onclick="this.closest('tr').remove();recalcKM()">✕</button></td>`;
-        tr.querySelectorAll('[contenteditable]').forEach(el => el.addEventListener('input', recalcKM));
+        var tbody = document.getElementById('kmBody');
+        var avgRow = tbody.querySelector('.avg-row');
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td contenteditable="true">KM-XX-SA</td><td contenteditable="true">75%</td><td>' + badge(75) + '</td><td class="del-col"><button class="del-btn" onclick="this.closest(\'tr\').remove();recalcKM()">x</button></td>';
+        tr.querySelectorAll('[contenteditable]').forEach(function (el) {
+          el.addEventListener('input', recalcKM);
+        });
         tbody.insertBefore(tr, avgRow);
-        recalcKM(true);
+        recalcKM();
       } else {
-        const tbody = document.getElementById('pmBody');
-        const avgRow = tbody.querySelector('.avg-row');
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td contenteditable="true">PM-XX</td><td contenteditable="true">Project Title</td><td contenteditable="true">80%</td><td>${badge(80)}</td><td class="del-col"><button class="del-btn" onclick="this.closest('tr').remove();recalcPM()">✕</button></td>`;
-        tr.querySelectorAll('[contenteditable]').forEach(el => el.addEventListener('input', recalcPM));
-        tbody.insertBefore(tr, avgRow);
-        recalcPM(true);
+        var tbody2 = document.getElementById('pmBody');
+        var avgRow2 = tbody2.querySelector('.avg-row');
+        var tr2 = document.createElement('tr');
+        tr2.innerHTML = '<td contenteditable="true">PM-XX</td><td contenteditable="true">Project Title</td><td contenteditable="true">80%</td><td>' + badge(80) + '</td><td class="del-col"><button class="del-btn" onclick="this.closest(\'tr\').remove();recalcPM()">x</button></td>';
+        tr2.querySelectorAll('[contenteditable]').forEach(function (el) {
+          el.addEventListener('input', recalcPM);
+        });
+        tbody2.insertBefore(tr2, avgRow2);
+        recalcPM();
       }
     }
 
     function toggleEdit() {
       editing = !editing;
-      const kmRows = getKMRows();
-      const pmRows = getPMRows();
+      var kmRows = getKMRows();
+      var pmRows = getPMRows();
       document.body.classList.toggle('editing', editing);
-      document.getElementById('editBtn').textContent = editing ? '✓ Done editing' : '✏ Edit mode';
+      document.getElementById('editBtn').textContent = editing ? 'Done editing' : 'Edit mode';
       document.getElementById('editHint').textContent = editing ? 'Click any text to edit. Scores auto-calculate.' : '';
-      document.querySelectorAll('[contenteditable]').forEach(el => el.setAttribute('contenteditable', editing ? 'true' : 'false'));
-      document.querySelectorAll('.del-col').forEach(el => el.style.display = editing ? '' : 'none');
+      document.querySelectorAll('[contenteditable]').forEach(function (el) {
+        el.setAttribute('contenteditable', editing ? 'true' : 'false');
+      });
+      document.querySelectorAll('.del-col').forEach(function (el) {
+        el.style.display = editing ? '' : 'none';
+      });
       document.getElementById('kmAdd').style.display = editing ? '' : 'none';
       document.getElementById('pmAdd').style.display = editing ? '' : 'none';
       renderKM(kmRows);
       renderPM(pmRows);
     }
 
-    // ─── AI Narrative Generation ───────────────────────────────────────────────
+    function exportToWord() {
+      var studentName = document.getElementById('studentName').innerText.trim() || 'Student';
+      var filename = studentName.replace(/\s+/g, '_') + '_Performance_Report.doc';
+
+      var reportEl = document.querySelector('.report');
+      var content = reportEl.innerHTML;
+
+      var styleSheets = document.querySelectorAll('style');
+      var styles = '';
+      for (var i = 0; i < styleSheets.length; i++) {
+        styles += styleSheets[i].innerHTML;
+      }
+
+      var extraStyles = [
+        'body { background: #fff; padding: 20px; font-family: sans-serif; }',
+        '.report { box-shadow: none !important; border: none !important; padding: 0 !important; }',
+        '.del-col, .add-btn, .gen-narrative-btn, #toolbar { display: none !important; }',
+        'table { border-collapse: collapse; width: 100%; border: 1px solid #eee; }',
+        'th, td { border: 1px solid #eee; padding: 8px; }'
+      ].join(' ');
+
+      var html = '<!DOCTYPE html><html><head><meta charset="utf-8">';
+      html += '<style>' + styles + extraStyles + '</style>';
+      html += '</' + 'head><bo' + 'dy>';
+      html += '<div class="report">' + content + '</div>';
+      html += '</' + 'body></' + 'html>';
+
+      var blob = new Blob(['\uFEFF' + html], { type: 'application/msword' });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    }
 
     async function generateNarrative() {
-      const btn = document.getElementById('genNarrativeBtn');
-      const narrativeEl = document.getElementById('narrativeText');
+      var apiKey = localStorage.getItem('ANTHROPIC_API_KEY');
+      if (!apiKey) {
+        apiKey = prompt('Please enter your Anthropic API Key to use this feature.\n(It will be saved securely in your browser)');
+        if (!apiKey) return;
+        localStorage.setItem('ANTHROPIC_API_KEY', apiKey);
+      }
 
-      // Collect current data
-      const studentName = document.querySelector('.meta strong').innerText.trim();
-      const kmRows = getKMRows();
-      const pmRows = getPMRows();
-      const kmAvg = parseInt(document.getElementById('statKM').textContent);
-      const pmAvg = parseInt(document.getElementById('statPM').textContent);
-      const overall = parseInt(document.getElementById('statOverall').textContent);
+      var btn = document.getElementById('genNarrativeBtn');
+      var narrativeEl = document.getElementById('narrativeText');
+      var studentName = document.getElementById('studentName').innerText.trim();
+      var kmRows = getKMRows();
+      var pmRows = getPMRows();
+      var kmAvg = parseInt(document.getElementById('statKM').textContent);
+      var pmAvg = parseInt(document.getElementById('statPM').textContent);
+      var overall = parseInt(document.getElementById('statOverall').textContent);
 
-      const kmTable = kmRows.map(r => `${r[0]}: ${r[1]}`).join('\n');
-      const pmTable = pmRows.map(r => `${r[0]} — ${r[1]}: ${r[2]}`).join('\n');
+      var kmTable = kmRows.map(function (r) { return r[0] + ': ' + r[1]; }).join('\n');
+      var pmTable = pmRows.map(function (r) { return r[0] + ' - ' + r[1] + ': ' + r[2]; }).join('\n');
 
-      const prompt = `You are writing an official student performance report narrative for Melsoft Academy.
-
-Student: ${studentName}
-Overall Average: ${overall}%
-KM-SA Average: ${kmAvg}%
-PM Average: ${pmAvg}%
-
-Knowledge Module Summative Assessments:
-${kmTable}
-
-Practical Module Projects:
-${pmTable}
-
-Write a professional, warm, and personalised 3-paragraph performance narrative for this student. Structure it as follows:
-1. Opening paragraph: Introduce the student's overall performance, mention the combined average, and highlight standout PM results (perfect scores, high scorers, capstone/final project).
-2. Middle paragraph: Discuss KM performance — highlight strong results, note any dips (mid-programme complexity is normal), and comment on recovery or trends.
-3. Closing paragraph: A brief, encouraging character summary about the student's qualities as a developing developer.
-
-Use "he/his" pronouns. Write in a formal but human tone, similar to a university-level report. Do not use bullet points or headers — write flowing prose only. Do not include the student's name more than twice.`;
+      var prompt = 'You are writing a student performance narrative for a coding academy report card.\n\n';
+      prompt += 'Student: ' + studentName + '\n';
+      prompt += 'Overall Average: ' + overall + '%\n';
+      prompt += 'KM-SA Average: ' + kmAvg + '%\n';
+      prompt += 'PM Average: ' + pmAvg + '%\n\n';
+      prompt += 'KM-SA Scores:\n' + kmTable + '\n\n';
+      prompt += 'PM Scores:\n' + pmTable + '\n\n';
+      prompt += 'Write a warm, professional 3-paragraph narrative assessing this student. Mention specific scores. Do not use bullet points.';
 
       btn.disabled = true;
-      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Generating…`;
-
+      btn.textContent = 'Generating...';
       narrativeEl.classList.add('generating');
-      narrativeEl.textContent = 'Generating narrative from scores…';
+      narrativeEl.textContent = 'Generating narrative...';
 
       try {
-        const response = await fetch("https://api.anthropic.com/v1/messages", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        var response = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+          },
           body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
+            model: 'claude-sonnet-4-20250514',
             max_tokens: 1000,
-            messages: [{ role: "user", content: prompt }]
+            messages: [{ role: 'user', content: prompt }]
           })
         });
 
-        if (!response.ok) throw new Error(`API error: ${response.status}`);
+        if (!response.ok) throw new Error('API error: ' + response.status);
 
-        const data = await response.json();
-        const text = data.content?.map(b => b.text || '').join('').trim();
-
-        if (!text) throw new Error('Empty response');
-
+        var data = await response.json();
+        var text = '';
+        if (data.content && data.content.length > 0) {
+          data.content.forEach(function (block) {
+            if (block.type === 'text') text += block.text;
+          });
+        }
         narrativeEl.classList.remove('generating');
-        narrativeEl.textContent = text;
-
+        narrativeEl.textContent = text.trim() || 'Generation failed — no content returned.';
       } catch (err) {
         narrativeEl.classList.remove('generating');
-        narrativeEl.textContent = 'Failed to generate narrative. Please check your connection and try again.\n\nError: ' + err.message;
+        narrativeEl.textContent = 'Error: ' + err.message;
       }
 
       btn.disabled = false;
-      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Auto-generate from scores`;
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> Auto-generate from scores';
     }
 
     renderKM();
