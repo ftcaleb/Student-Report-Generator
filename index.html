@@ -719,11 +719,11 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
 
       var reportEl = document.querySelector('.report');
       var clone = reportEl.cloneNode(true);
-      
+
       // Physically remove interactive elements so Word doesn't render them
       var unwanted = clone.querySelectorAll('.del-col, .add-btn, .gen-narrative-btn');
       unwanted.forEach(function(el) { el.remove(); });
-      
+
       var content = clone.innerHTML;
 
       var styleSheets = document.querySelectorAll('style');
