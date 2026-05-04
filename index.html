@@ -90,9 +90,25 @@
     }
 
     .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
       border-bottom: 2px solid #1a1a1a;
       padding-bottom: 1.25rem;
       margin-bottom: 1.5rem;
+    }
+
+    .header-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .header-logo {
+      max-height: 54px;
+      max-width: 30%;
+      object-fit: contain;
+      flex-shrink: 1;
+      margin-left: 1rem;
     }
 
     .header h1 {
@@ -406,15 +422,18 @@
   <div class="report">
 
     <div class="header">
-      <h1><span contenteditable="false">Student Performance Report</span></h1>
-      <div class="sub">
-        <span contenteditable="false">Melsoft Academy</span> &middot; <span contenteditable="false">January 2025
-          Cohort</span>
+      <div class="header-content">
+        <h1><span contenteditable="false">Student Performance Report</span></h1>
+        <div class="sub">
+          <span contenteditable="false">Melsoft Academy</span> &middot; <span contenteditable="false">January 2025
+            Cohort</span>
+        </div>
+        <div class="meta">
+          <span>Student: <strong contenteditable="false" id="studentName">XXXX XXX</strong></span>
+          <span>Report Date: <strong contenteditable="false" id="reportDate">18 March 2026</strong></span>
+        </div>
       </div>
-      <div class="meta">
-        <span>Student: <strong contenteditable="false" id="studentName">XXXX XXX</strong></span>
-        <span>Report Date: <strong contenteditable="false" id="reportDate">18 March 2026</strong></span>
-      </div>
+      <img src="./melsoft_logo_transparent.png" alt="Melsoft Academy Logo" class="header-logo">
     </div>
 
     <div class="stats">
