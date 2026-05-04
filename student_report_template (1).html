@@ -360,14 +360,16 @@
       width: 34px;
     }
 
+    /* ─── PRINT ─────────────────────────────────────────────── */
     @media print {
       @page {
-        margin: 0;
+        margin: 1.5cm;
+        size: A4 portrait;
       }
 
       body {
-        background: #fff;
-        padding: 1.5cm;
+        background: #fff !important;
+        padding: 0 !important;
       }
 
       #toolbar {
@@ -375,9 +377,7 @@
       }
 
       .report {
-        box-shadow: none;
-        border-radius: 0;
-        padding: 0;
+        display: contents !important;
       }
 
       .del-col,
@@ -390,6 +390,52 @@
         outline: none !important;
         background: transparent !important;
       }
+
+      /* JS inserts these divs — guaranteed page break in Chrome */
+      .js-page-break {
+        display: block !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+      }
+
+      /* Keep each table section together — do NOT split across pages */
+      #kmSection,
+      #pmSection {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      #kmSection table,
+      #pmSection table {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      td,
+      th {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .stats {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+      }
+
+      .stat {
+        flex: 1 1 20%;
+      }
     }
   </style>
 </head>
@@ -398,7 +444,7 @@
 
   <div id="toolbar">
     <button class="primary" onclick="toggleEdit()" id="editBtn">&#9998; Edit mode</button>
-    <button onclick="window.print()">&#128424; Save as PDF</button>
+    <button onclick="printReport()">&#128424; Save as PDF</button>
     <button onclick="exportToWord()">&#128196; Save as Word (.doc)</button>
     <span id="editHint"></span>
   </div>
@@ -408,8 +454,8 @@
     <div class="header">
       <h1><span contenteditable="false">Student Performance Report</span></h1>
       <div class="sub">
-        <span contenteditable="false">Melsoft Academy</span> &middot; <span contenteditable="false">January 2025
-          Cohort</span>
+        <span contenteditable="false">Melsoft Academy</span> &middot;
+        <span contenteditable="false">January 2025 Cohort</span>
       </div>
       <div class="meta">
         <span>Student: <strong contenteditable="false" id="studentName">XXXX XXX</strong></span>
@@ -458,7 +504,9 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
       </div>
     </div>
 
-    <div class="section">
+    <!-- JS will insert .js-page-break divs here before printing -->
+
+    <div class="section" id="kmSection">
       <h2>Knowledge Module Summative Assessments (KM-SA)</h2>
       <table>
         <thead>
@@ -474,7 +522,7 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
       <button class="add-btn" id="kmAdd" style="display:none" onclick="addRow('km')">+ Add row</button>
     </div>
 
-    <div class="section">
+    <div class="section" id="pmSection">
       <h2>Practical Module Projects (PM)</h2>
       <table>
         <thead>
@@ -658,10 +706,8 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
     }
 
     function recalcOverall() {
-      var kmText = document.getElementById('statKM').textContent;
-      var pmText = document.getElementById('statPM').textContent;
-      var km = parseInt(kmText);
-      var pm = parseInt(pmText);
+      var km = parseInt(document.getElementById('statKM').textContent);
+      var pm = parseInt(document.getElementById('statPM').textContent);
       if (!isNaN(km) && !isNaN(pm)) {
         document.getElementById('statOverall').textContent = Math.round((km + pm) / 2) + '%';
       }
@@ -676,9 +722,7 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
         var avgRow = tbody.querySelector('.avg-row');
         var tr = document.createElement('tr');
         tr.innerHTML = '<td contenteditable="true">KM-XX-SA</td><td contenteditable="true">75%</td><td>' + badge(75) + '</td><td class="del-col"><button class="del-btn" onclick="this.closest(\'tr\').remove();recalcKM()">x</button></td>';
-        tr.querySelectorAll('[contenteditable]').forEach(function (el) {
-          el.addEventListener('input', recalcKM);
-        });
+        tr.querySelectorAll('[contenteditable]').forEach(function (el) { el.addEventListener('input', recalcKM); });
         tbody.insertBefore(tr, avgRow);
         recalcKM();
       } else {
@@ -686,9 +730,7 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
         var avgRow2 = tbody2.querySelector('.avg-row');
         var tr2 = document.createElement('tr');
         tr2.innerHTML = '<td contenteditable="true">PM-XX</td><td contenteditable="true">Project Title</td><td contenteditable="true">80%</td><td>' + badge(80) + '</td><td class="del-col"><button class="del-btn" onclick="this.closest(\'tr\').remove();recalcPM()">x</button></td>';
-        tr2.querySelectorAll('[contenteditable]').forEach(function (el) {
-          el.addEventListener('input', recalcPM);
-        });
+        tr2.querySelectorAll('[contenteditable]').forEach(function (el) { el.addEventListener('input', recalcPM); });
         tbody2.insertBefore(tr2, avgRow2);
         recalcPM();
       }
@@ -704,14 +746,43 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
       document.querySelectorAll('[contenteditable]').forEach(function (el) {
         el.setAttribute('contenteditable', editing ? 'true' : 'false');
       });
-      document.querySelectorAll('.del-col').forEach(function (el) {
-        el.style.display = editing ? '' : 'none';
-      });
+      document.querySelectorAll('.del-col').forEach(function (el) { el.style.display = editing ? '' : 'none'; });
       document.getElementById('kmAdd').style.display = editing ? '' : 'none';
       document.getElementById('pmAdd').style.display = editing ? '' : 'none';
       renderKM(kmRows);
       renderPM(pmRows);
     }
+
+    /* ── Inject real page-break divs before printing, remove after ── */
+    function makeBreak() {
+      var el = document.createElement('div');
+      el.className = 'js-page-break';
+      el.setAttribute('data-print-break', 'true');
+      return el;
+    }
+
+    function injectBreaks() {
+      removeBreaks(); // clear any leftover from previous print
+      var kmSection = document.getElementById('kmSection');
+      var pmSection = document.getElementById('pmSection');
+      kmSection.parentNode.insertBefore(makeBreak(), kmSection);
+      pmSection.parentNode.insertBefore(makeBreak(), pmSection);
+    }
+
+    function removeBreaks() {
+      document.querySelectorAll('[data-print-break]').forEach(function (el) { el.remove(); });
+    }
+
+    // Use beforeprint/afterprint events — these fire at exactly the right moment
+    window.addEventListener('beforeprint', injectBreaks);
+    window.addEventListener('afterprint', removeBreaks);
+
+    function printReport() {
+      // Fallback manual inject for browsers that don't fire beforeprint early enough
+      injectBreaks();
+      setTimeout(function () { window.print(); }, 100);
+    }
+    /* ───────────────────────────────────────────────────────── */
 
     function exportToWord() {
       var studentName = document.getElementById('studentName').innerText.trim() || 'Student';
@@ -719,18 +790,13 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
 
       var reportEl = document.querySelector('.report');
       var clone = reportEl.cloneNode(true);
-      
-      // Physically remove interactive elements so Word doesn't render them
       var unwanted = clone.querySelectorAll('.del-col, .add-btn, .gen-narrative-btn');
-      unwanted.forEach(function(el) { el.remove(); });
-      
+      unwanted.forEach(function (el) { el.remove(); });
       var content = clone.innerHTML;
 
       var styleSheets = document.querySelectorAll('style');
       var styles = '';
-      for (var i = 0; i < styleSheets.length; i++) {
-        styles += styleSheets[i].innerHTML;
-      }
+      for (var i = 0; i < styleSheets.length; i++) { styles += styleSheets[i].innerHTML; }
 
       var extraStyles = [
         'body { background: #fff; padding: 20px; font-family: sans-serif; }',
@@ -787,9 +853,7 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
       try {
         var response = await fetch('http://localhost:3000/api/chat', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             model: 'claude-sonnet-4-20250514',
             max_tokens: 1000,
@@ -802,9 +866,7 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
         var data = await response.json();
         var text = '';
         if (data.content && data.content.length > 0) {
-          data.content.forEach(function (block) {
-            if (block.type === 'text') text += block.text;
-          });
+          data.content.forEach(function (block) { if (block.type === 'text') text += block.text; });
         }
         narrativeEl.classList.remove('generating');
         narrativeEl.textContent = text.trim() || 'Generation failed — no content returned.';
@@ -820,8 +882,7 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
     var dateEl = document.getElementById('reportDate');
     if (dateEl) {
       var today = new Date();
-      var options = { day: 'numeric', month: 'long', year: 'numeric' };
-      dateEl.textContent = today.toLocaleDateString('en-GB', options);
+      dateEl.textContent = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
     }
 
     renderKM();
