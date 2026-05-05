@@ -90,9 +90,25 @@
     }
 
     .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
       border-bottom: 2px solid #1a1a1a;
       padding-bottom: 1.25rem;
       margin-bottom: 1.5rem;
+    }
+
+    .header-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .header-logo {
+      max-height: 54px;
+      max-width: 30%;
+      object-fit: contain;
+      flex-shrink: 1;
+      margin-left: 1rem;
     }
 
     .header h1 {
@@ -360,6 +376,10 @@
       width: 34px;
     }
 
+    .print-section-logo {
+      display: none;
+    }
+
     /* ─── PRINT ─────────────────────────────────────────────── */
     @media print {
       @page {
@@ -391,8 +411,22 @@
         background: transparent !important;
       }
 
-      /* JS inserts these divs — guaranteed page break in Chrome */
-      .js-page-break {
+      /* ── FORCE each table section to start on its own page ── */
+      /* Belt-and-suspenders: break-before + margin-top spacer  */
+      #kmSection {
+        page-break-before: always !important;
+        break-before: page !important;
+        margin-top: 0 !important;
+      }
+
+      #pmSection {
+        page-break-before: always !important;
+        break-before: page !important;
+        margin-top: 0 !important;
+      }
+
+      /* Spacer divs injected by JS sit just before each section */
+      .print-spacer {
         display: block !important;
         page-break-after: always !important;
         break-after: page !important;
@@ -401,6 +435,7 @@
         padding: 0 !important;
         border: none !important;
         background: transparent !important;
+        visibility: hidden !important;
       }
 
       /* Keep each table section together — do NOT split across pages */
@@ -408,6 +443,18 @@
       #pmSection {
         page-break-inside: avoid !important;
         break-inside: avoid !important;
+        position: relative !important;
+        padding-top: 95px !important;
+      }
+
+      .print-section-logo {
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+        max-height: 54px !important;
+        max-width: 30% !important;
+        object-fit: contain !important;
       }
 
       #kmSection table,
@@ -436,6 +483,11 @@
       .stat {
         flex: 1 1 20%;
       }
+
+      /* Hide the old JS-injected break divs — not needed anymore */
+      .js-page-break {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -452,15 +504,18 @@
   <div class="report">
 
     <div class="header">
-      <h1><span contenteditable="false">Student Performance Report</span></h1>
-      <div class="sub">
-        <span contenteditable="false">Melsoft Academy</span> &middot;
-        <span contenteditable="false">January 2025 Cohort</span>
+      <div class="header-content">
+        <h1><span contenteditable="false">Student Performance Report</span></h1>
+        <div class="sub">
+          <span contenteditable="false">Melsoft Academy</span> &middot;
+          <span contenteditable="false">January 2025 Cohort</span>
+        </div>
+        <div class="meta">
+          <span>Student: <strong contenteditable="false" id="studentName">XXXX XXX</strong></span>
+          <span>Report Date: <strong contenteditable="false" id="reportDate">18 March 2026</strong></span>
+        </div>
       </div>
-      <div class="meta">
-        <span>Student: <strong contenteditable="false" id="studentName">XXXX XXX</strong></span>
-        <span>Report Date: <strong contenteditable="false" id="reportDate">18 March 2026</strong></span>
-      </div>
+      <img src="./melsoft_logo_transparent.png" alt="Melsoft Academy Logo" class="header-logo">
     </div>
 
     <div class="stats">
@@ -504,9 +559,8 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
       </div>
     </div>
 
-    <!-- JS will insert .js-page-break divs here before printing -->
-
     <div class="section" id="kmSection">
+      <img src="./melsoft_logo_transparent.png" class="print-section-logo mb-5" alt="Melsoft Academy Logo">
       <h2>Knowledge Module Summative Assessments (KM-SA)</h2>
       <table>
         <thead>
@@ -523,6 +577,7 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
     </div>
 
     <div class="section" id="pmSection">
+      <img src="./melsoft_logo_transparent.png" class="print-section-logo mb-5" alt="Melsoft Academy Logo">
       <h2>Practical Module Projects (PM)</h2>
       <table>
         <thead>
@@ -753,36 +808,32 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
       renderPM(pmRows);
     }
 
-    /* ── Inject real page-break divs before printing, remove after ── */
-    function makeBreak() {
+    function makeSpacer() {
       var el = document.createElement('div');
-      el.className = 'js-page-break';
-      el.setAttribute('data-print-break', 'true');
+      el.className = 'print-spacer';
+      el.setAttribute('data-spacer', 'true');
       return el;
     }
 
-    function injectBreaks() {
-      removeBreaks(); // clear any leftover from previous print
+    function injectSpacers() {
+      removeSpacers();
       var kmSection = document.getElementById('kmSection');
       var pmSection = document.getElementById('pmSection');
-      kmSection.parentNode.insertBefore(makeBreak(), kmSection);
-      pmSection.parentNode.insertBefore(makeBreak(), pmSection);
+      kmSection.parentNode.insertBefore(makeSpacer(), kmSection);
+      pmSection.parentNode.insertBefore(makeSpacer(), pmSection);
     }
 
-    function removeBreaks() {
-      document.querySelectorAll('[data-print-break]').forEach(function (el) { el.remove(); });
+    function removeSpacers() {
+      document.querySelectorAll('[data-spacer]').forEach(function (el) { el.remove(); });
     }
 
-    // Use beforeprint/afterprint events — these fire at exactly the right moment
-    window.addEventListener('beforeprint', injectBreaks);
-    window.addEventListener('afterprint', removeBreaks);
+    window.addEventListener('beforeprint', injectSpacers);
+    window.addEventListener('afterprint', removeSpacers);
 
     function printReport() {
-      // Fallback manual inject for browsers that don't fire beforeprint early enough
-      injectBreaks();
-      setTimeout(function () { window.print(); }, 100);
+      injectSpacers();
+      setTimeout(function () { window.print(); }, 80);
     }
-    /* ───────────────────────────────────────────────────────── */
 
     function exportToWord() {
       var studentName = document.getElementById('studentName').innerText.trim() || 'Student';
