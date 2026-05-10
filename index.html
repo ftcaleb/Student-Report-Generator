@@ -378,7 +378,9 @@
 
     @media print {
       @page {
-        margin: 0;
+        margin: 1.5cm;
+        margin-top: 0;
+        size: A4 portrait;
       }
 
       body {
@@ -394,6 +396,7 @@
         box-shadow: none;
         border-radius: 0;
         padding: 0;
+        padding-top: 1.5cm;
       }
 
       .del-col,
@@ -806,9 +809,7 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
       try {
         var response = await fetch('http://localhost:3000/api/chat', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             model: 'claude-sonnet-4-20250514',
             max_tokens: 1000,
@@ -821,9 +822,7 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
         var data = await response.json();
         var text = '';
         if (data.content && data.content.length > 0) {
-          data.content.forEach(function (block) {
-            if (block.type === 'text') text += block.text;
-          });
+          data.content.forEach(function (block) { if (block.type === 'text') text += block.text; });
         }
         narrativeEl.classList.remove('generating');
         narrativeEl.textContent = text.trim() || 'Generation failed — no content returned.';
@@ -839,8 +838,7 @@ Overall, XXXX is a high-performing student who exhibits the qualities of a promi
     var dateEl = document.getElementById('reportDate');
     if (dateEl) {
       var today = new Date();
-      var options = { day: 'numeric', month: 'long', year: 'numeric' };
-      dateEl.textContent = today.toLocaleDateString('en-GB', options);
+      dateEl.textContent = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
     }
 
     renderKM();
